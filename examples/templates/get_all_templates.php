@@ -6,7 +6,7 @@ require dirname(__FILE__).'/../bootstrap.php';
 
 use SparkPost\SparkPost;
 use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 
 $httpClient = new GuzzleAdapter(new Client());
 
@@ -18,7 +18,7 @@ $promise = $sparky->request('GET', 'templates');
 try {
     $response = $promise->wait();
     echo $response->getStatusCode()."\n";
-    print_r($response->getBody())."\n";
+    print_r($response->getDecodedBody())."\n";
 } catch (\Exception $e) {
     echo $e->getCode()."\n";
     echo $e->getMessage()."\n";

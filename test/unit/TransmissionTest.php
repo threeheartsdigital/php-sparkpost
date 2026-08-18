@@ -55,7 +55,7 @@ class TransmissionTest extends TestCase
     public function setUp(): void
     {
         //setup mock for the adapter
-        $this->clientMock = Mockery::mock('Http\Adapter\Guzzle6\Client');
+        $this->clientMock = Mockery::mock('Http\Client\HttpClient, Http\Client\HttpAsyncClient');
 
         $this->resource = new SparkPost($this->clientMock, ['key' => 'SPARKPOST_API_KEY', 'async' => false]);
     }
@@ -79,7 +79,7 @@ class TransmissionTest extends TestCase
     public function testGet()
     {
         $responseMock = Mockery::mock('Psr\Http\Message\ResponseInterface');
-        $responseBodyMock = Mockery::mock();
+        $responseBodyMock = Mockery::mock('Psr\Http\Message\StreamInterface');
 
         $responseBody = ['results' => 'yay'];
 
@@ -94,14 +94,14 @@ class TransmissionTest extends TestCase
 
         $response = $this->resource->transmissions->get($this->getTransmissionPayload);
 
-        $this->assertEquals($responseBody, $response->getBody());
+        $this->assertEquals($responseBody, $response->getDecodedBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testPut()
     {
         $responseMock = Mockery::mock('Psr\Http\Message\ResponseInterface');
-        $responseBodyMock = Mockery::mock();
+        $responseBodyMock = Mockery::mock('Psr\Http\Message\StreamInterface');
 
         $responseBody = ['results' => 'yay'];
 
@@ -116,14 +116,14 @@ class TransmissionTest extends TestCase
 
         $response = $this->resource->transmissions->put($this->getTransmissionPayload);
 
-        $this->assertEquals($responseBody, $response->getBody());
+        $this->assertEquals($responseBody, $response->getDecodedBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testPost()
     {
         $responseMock = Mockery::mock('Psr\Http\Message\ResponseInterface');
-        $responseBodyMock = Mockery::mock();
+        $responseBodyMock = Mockery::mock('Psr\Http\Message\StreamInterface');
 
         $responseBody = ['results' => 'yay'];
 
@@ -138,7 +138,7 @@ class TransmissionTest extends TestCase
 
         $response = $this->resource->transmissions->post($this->postTransmissionPayload);
 
-        $this->assertEquals($responseBody, $response->getBody());
+        $this->assertEquals($responseBody, $response->getDecodedBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
 
@@ -148,7 +148,7 @@ class TransmissionTest extends TestCase
         $postTransmissionPayload['recipients'] = ['list_id' => 'SOME_LIST_ID'];
 
         $responseMock = Mockery::mock('Psr\Http\Message\ResponseInterface');
-        $responseBodyMock = Mockery::mock();
+        $responseBodyMock = Mockery::mock('Psr\Http\Message\StreamInterface');
 
         $responseBody = ['results' => 'yay'];
 
@@ -163,14 +163,14 @@ class TransmissionTest extends TestCase
 
         $response = $this->resource->transmissions->post();
 
-        $this->assertEquals($responseBody, $response->getBody());
+        $this->assertEquals($responseBody, $response->getDecodedBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testDelete()
     {
         $responseMock = Mockery::mock('Psr\Http\Message\ResponseInterface');
-        $responseBodyMock = Mockery::mock();
+        $responseBodyMock = Mockery::mock('Psr\Http\Message\StreamInterface');
 
         $responseBody = ['results' => 'yay'];
 
@@ -185,7 +185,7 @@ class TransmissionTest extends TestCase
 
         $response = $this->resource->transmissions->delete($this->getTransmissionPayload);
 
-        $this->assertEquals($responseBody, $response->getBody());
+        $this->assertEquals($responseBody, $response->getDecodedBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
 

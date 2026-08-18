@@ -23,11 +23,11 @@ The recommended way to install the SparkPost PHP Library is through composer.
 curl -sS https://getcomposer.org/installer | php
 ```
 
-Sparkpost requires php-http client (see [Setting up a Request Adapter](#setting-up-a-request-adapter)). There are several [providers](https://packagist.org/providers/php-http/client-implementation) available. If you were using guzzle6 your install might look like this.
+Sparkpost requires php-http client (see [Setting up a Request Adapter](#setting-up-a-request-adapter)). There are several [providers](https://packagist.org/providers/php-http/client-implementation) available. If you are using Guzzle 7, your install might look like this.
 
 ```
-composer require php-http/guzzle6-adapter "^1.1"
-composer require guzzlehttp/guzzle "^6.0"
+composer require php-http/guzzle7-adapter "^1.0"
+composer require guzzlehttp/guzzle "^7.0"
 ```
 
 Next, run the Composer command to install the SparkPost PHP Library:
@@ -82,7 +82,7 @@ require 'vendor/autoload.php';
 
 use SparkPost\SparkPost;
 use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 
 $httpClient = new GuzzleAdapter(new Client());
 $sparky = new SparkPost($httpClient, ['key'=>'YOUR_API_KEY']);
@@ -192,7 +192,7 @@ require 'vendor/autoload.php';
 
 use SparkPost\SparkPost;
 use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 
 $httpClient = new GuzzleAdapter(new Client());
 // Good practice to not have API key literals in code - set an environment variable instead
@@ -240,7 +240,7 @@ try {
         var_dump($error);
     }
 print($response->getStatusCode());
-$results = $response->getBody()['results'];
+$results = $response->getDecodedBody()['results'];
 var_dump($results);
 ?>
 ```
@@ -274,7 +274,7 @@ require 'vendor/autoload.php';
 
 use SparkPost\SparkPost;
 use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 
 $httpClient = new GuzzleAdapter(new Client());
 $sparky = new SparkPost($httpClient, [
@@ -294,6 +294,8 @@ For complete list of resources, refer to [API documentation](https://developers.
 ## Handling Responses
 The API calls either return a `SparkPostPromise` or `SparkPostResponse` depending on if `async` is `true` or `false`
 
+`SparkPostResponse` implements PSR-7's `ResponseInterface`. Its `getBody()` method returns a `StreamInterface`. Use `getDecodedBody()` to decode the JSON response into an associative array.
+
 ### Synchronous
 ```php
 $sparky->setOptions(['async' => false]);
@@ -301,7 +303,7 @@ try {
     $response = ... // YOUR API CALL GOES HERE
 
     echo $response->getStatusCode()."\n";
-    print_r($response->getBody())."\n";
+    print_r($response->getDecodedBody())."\n";
 }
 catch (\Exception $e) {
     echo $e->getCode()."\n";
@@ -319,7 +321,7 @@ $promise = ... // YOUR API CALL GOES HERE
 try {
     $response = $promise->wait();
     echo $response->getStatusCode()."\n";
-    print_r($response->getBody())."\n";
+    print_r($response->getDecodedBody())."\n";
 } catch (\Exception $e) {
     echo $e->getCode()."\n";
     echo $e->getMessage()."\n";
@@ -336,7 +338,7 @@ $promise->then(
     // Success callback
     function ($response) {
         echo $response->getStatusCode()."\n";
-        print_r($response->getBody())."\n";
+        print_r($response->getDecodedBody())."\n";
     },
     // Failure callback
     function (Exception $e) {

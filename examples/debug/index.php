@@ -6,7 +6,7 @@ require dirname(__FILE__).'/../bootstrap.php';
 
 use SparkPost\SparkPost;
 use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 
 $httpClient = new GuzzleAdapter(new Client());
 
@@ -31,7 +31,7 @@ try {
 
     echo "Response:\n";
     echo $response->getStatusCode()."\n";
-    print_r($response->getBody())."\n";
+    print_r($response->getDecodedBody())."\n";
 } catch (\Exception $e) {
     echo "Request:\n";
     print_r($e->getRequest());
