@@ -50,8 +50,8 @@ Use the following for `my-app/composer.json`:
         }
     ],
     "require": {
-        "php-http/guzzle6-adapter": "^1.1",
-        "guzzlehttp/guzzle": "^6.0",
+        "php-http/guzzle7-adapter": "^1.0",
+        "guzzlehttp/guzzle": "^7.0",
         "sparkpost/sparkpost": "dev-master"
     }
 }

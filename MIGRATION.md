@@ -2,6 +2,22 @@
 
 This is a guide to help you make the switch when the SparkPost PHP library changes major versions.
 
+## Migrating to PSR HTTP Message 2.0
+
+`SparkPostResponse` now fully implements the PSR HTTP Message 2.0 `ResponseInterface`. As required by PSR-7, `getBody()` returns a `Psr\Http\Message\StreamInterface` instead of decoded JSON.
+
+To keep receiving an associative array, replace calls to `getBody()` with `getDecodedBody()`:
+
+```php
+// Before
+$results = $response->getBody()['results'];
+
+// After
+$results = $response->getDecodedBody()['results'];
+```
+
+The minimum supported PHP version is now 7.2. Projects using the Guzzle adapter must use `php-http/guzzle7-adapter` and Guzzle 7.
+
 ## Migrating from 1.0 to 2.0
 
 ## Package name change

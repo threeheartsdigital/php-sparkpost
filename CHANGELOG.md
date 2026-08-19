@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+- Require PSR HTTP Message 2.0 and PHP 7.2 or newer.
+- Replace the Guzzle 6 adapter used for development and examples with the Guzzle 7 adapter.
+- Make `SparkPostResponse::getBody()` return the PSR-7 body stream and add `getDecodedBody()` for decoded JSON responses.
 
 ## [2.3.0] - 2021-03-16
 - [#201](https://github.com/SparkPost/php-sparkpost/pull/201) Update examples, README
